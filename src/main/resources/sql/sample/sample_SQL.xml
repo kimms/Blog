@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sample.sample">
+	<insert id="insertSample" parameterType="kr.co.blog.sample.vo.SampleVO">
+		INSERT INTO	sample_table
+			(
+				sample_id, sample_name
+			)
+		VALUES
+			(
+				#{sampleId}, #{sampleName}
+			)
+	</insert>
+	
+	<select id="selectSample" parameterType="map" resultType="kr.co.blog.sample.vo.SampleVO">
+		SELECT
+			sample_id AS sampleId,
+			sample_name AS sampleName
+		FROM
+			sample_table
+		<if test="sampleId != null">
+		WHERE
+			sample_id = #{sampleId}
+		</if>
+	</select>
+	
+	<update id="updateSample" parameterType="kr.co.blog.sample.vo.SampleVO">
+		UPDATE
+			sample_table
+		SET
+			sample_name = #{sampleName}
+		WHERE
+			sample_id = #{sampleId}
+	</update>
+	
+	<delete id="deleteSample" parameterType="map">
+		DELETE FROM
+			sample_table
+		WHERE
+			sample_id = #{sampleId}
+	</delete>
+</mapper>

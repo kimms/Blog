@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	
+	<annotation-driven />
+	
+	<context:component-scan base-package="kr.co.blog"/>
+
+	<resources mapping="/resources/**" location="/resources/" />
+	
+	<!-- properties -->
+	<!-- 
+	<context:property-placeholder location="classpath:config/*.properties" />
+	-->
+
+	<!-- AOP 사용 설정 -->
+	<aop:aspectj-autoproxy/>
+	
+	<!-- Transaction AOP Advice 설정 -->
+	<tx:annotation-driven proxy-target-class="true"/>
+	                                                       
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*"		propagation="SUPPORTS" read-only="true"/>
+			<tx:method name="create*"	propagation="REQUIRED" rollback-for="Throwable"/>
+			<tx:method name="modify*"	propagation="REQUIRED" rollback-for="Throwable"/>
+			<tx:method name="remove*"	propagation="REQUIRED" rollback-for="Throwable"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- Transaction AOP 설정 -->
+	<aop:config proxy-target-class="true">
+		<aop:pointcut expression="execution(* kr.co.blog..*ServiceImpl.*(..))" 
+		id="requiredTransaction"/>
+		<aop:advisor advice-ref="transactionAdvice" pointcut-ref="requiredTransaction"/>
+	</aop:config>
+	
+	<!-- Resolver -->
+	<beans:bean class="kr.co.blog.common.error.resolver.CommonExceptionResolver"/>
+	<beans:bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+	    <beans:property name="order" value="1"/>
+	    <beans:property name="contentNegotiationManager">
+	        <beans:bean class="org.springframework.web.accept.ContentNegotiationManager">
+	            <beans:constructor-arg>
+	                <beans:bean class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
+	                    <beans:constructor-arg>
+	                        <beans:map>
+	                            <beans:entry key="json" value="application/json"/>
+	                            <beans:entry key="html" value="application/json"/>
+	                            <beans:entry key="png"  value="application/json"/>
+	                            <beans:entry key="jpg"  value="application/json"/>
+	                            <beans:entry key="jpeg" value="application/json"/>
+	                            <beans:entry key="jpe"  value="application/json"/>
+	                            <beans:entry key="gif"  value="application/json"/>
+	                            <beans:entry key="bmp"  value="application/json"/>
+	                            <beans:entry key="js"   value="application/json"/>
+	                            <beans:entry key="css"  value="application/json"/>
+	                        </beans:map>
+	                    </beans:constructor-arg>
+	                </beans:bean>
+	            </beans:constructor-arg>
+	        </beans:bean>
+	    </beans:property>
+ 
+	    <beans:property name="defaultViews">
+	    	<beans:list>
+	            <!-- JSON View -->
+	            <beans:bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+            </beans:list>
+	    </beans:property>
+    </beans:bean>
+	
+	
+	
+	
+</beans:beans>
