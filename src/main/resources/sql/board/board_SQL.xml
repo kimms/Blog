@@ -20,4 +20,12 @@
 			post_id = #{postId}
 	
 	</select>
+	
+	UPDATE
+		board_free
+	SET
+		select_count = (select_count + 1)
+	WHERE
+		post_id = #{postId}
+		
 </mapper>
