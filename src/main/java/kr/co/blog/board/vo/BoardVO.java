@@ -9,6 +9,7 @@ public class BoardVO{
 	@ApiModelProperty(value = "보드 이름", example = "테스트 보드")
 	private String boardName;
 	private String title;
+	private String postId;
 	
 	public String getBoardId() {
 		return boardId;
@@ -27,6 +28,12 @@ public class BoardVO{
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	public String getPostId() {
+		return postId;
+	}
+	public void setPostId(String postId) {
+		this.postId = postId;
 	}
 
 }

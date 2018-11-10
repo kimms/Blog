@@ -5,7 +5,7 @@
 <mapper namespace="board.board">
 	<select id="selectBoards" resultType="kr.co.blog.board.vo.BoardVO">
 		SELECT
-			board_id AS boardId,
+			post_id AS postId,
 			title
 		FROM
 			board_free
