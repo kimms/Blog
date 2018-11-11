@@ -32,8 +32,11 @@ public class BoardServiceImpl extends CommonService implements BoardService {
 	}
 	
 	@Override
-	public BoardVO getBoard(String boardId) throws Exception {
-		return boardDao.selectBoard(boardId);
+	public BoardVO getBoard(String postId) throws Exception {
+		BoardVO boardVO = boardDao.selectBoard(postId);
+		boardDao.updateSelectCount(postId);
+		
+		return boardVO;
 	}
 	
 	@Override

@@ -11,9 +11,11 @@
 			board_free
 	</select>
 	
-	<select id="selectBoard" parameterType="map" resultType="kr.co.blog.board.vo.BoardVO">
+	<select id="selectBoard" parameterType="kr.co.blog.board.vo.BoardVO" resultType="kr.co.blog.board.vo.BoardVO">
 		SELECT
-			title
+			title,
+			content,
+			select_count AS selectCount
 		FROM
 			board_free
 		WHERE
@@ -21,11 +23,37 @@
 	
 	</select>
 	
-	UPDATE
-		board_free
-	SET
-		select_count = (select_count + 1)
-	WHERE
-		post_id = #{postId}
+	<update id="updateSelectCount" parameterType="kr.co.blog.board.vo.BoardVO">
+		UPDATE
+			board_free
+		SET
+			select_count = (select_count + 1)
+		WHERE
+			post_id = #{postId}
 		
+	</update>
+	
+	<insert id="insertBoard" parameterType="kr.co.blog.board.vo.BoardVO">
+		INSERT INTO
+			board_free ( board_id, title, content)
+		VALUES
+			( 1, #{title}, #{content})
+	
+	</insert>
+	
+	<update id="updateBoard" parameterType="kr.co.blog.board.vo.BoardVO">
+		UPDATE
+			board_free
+		SET
+			post_id = post_id
+			<if test = "title != null">
+			, title = #{title}	
+			</if>
+			<if test = "content != null">
+            , content = #{content}
+            </if>
+		WHERE
+			post_id = #{postId}
+	
+	</update>
 </mapper>

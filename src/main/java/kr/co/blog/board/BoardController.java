@@ -59,12 +59,12 @@ public class BoardController extends CommonController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "boardId", value = "보드 아이디", dataType = "String", paramType = "path", required = true)
 	})
-	@RequestMapping(value = "/board/{boardId}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseVO<BoardVO> getBoard(@PathVariable String boardId) {
+	@RequestMapping(value = "/board/{postId}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseVO<BoardVO> getBoard(@PathVariable String postId) {
 		BoardVO result = null;
 		
 		try {
-			result = boardService.getBoard(boardId);
+			result = boardService.getBoard(postId);
 		} catch (Exception e) {
 			throw new CommonException(e);
 		}
@@ -73,14 +73,14 @@ public class BoardController extends CommonController {
 	
 	@ApiOperation(value = "수정")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "boardId", value = "보드 아이디", dataType = "String", paramType = "path", required = true)
+		@ApiImplicitParam(name = "postId", value = "보드 아이디", dataType = "String", paramType = "path", required = true)
 	})
-	@RequestMapping(value = "/board/{boardId}", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseVO<CommonResultDataVO> ModifyBoard(@PathVariable String boardId, @RequestBody BoardVO boardVO) {
+	@RequestMapping(value = "/board/{postId}", method = RequestMethod.PUT, produces = "application/json")
+	public ResponseVO<CommonResultDataVO> ModifyBoard(@PathVariable String postId, @RequestBody BoardVO boardVO) {
 		boolean result = false;
 		
 		try {
-			boardVO.setBoardId(boardId);
+			boardVO.setPostId(postId);
 			result = boardService.modifyBoard(boardVO);
 		} catch (Exception e) {
 			throw new CommonException(e);

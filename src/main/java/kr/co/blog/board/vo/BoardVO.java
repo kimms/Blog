@@ -10,6 +10,8 @@ public class BoardVO{
 	private String boardName;
 	private String title;
 	private String postId;
+	private int selectCount;
+	private String content;
 	
 	public String getBoardId() {
 		return boardId;
@@ -35,5 +37,18 @@ public class BoardVO{
 	public void setPostId(String postId) {
 		this.postId = postId;
 	}
+	public int getSelectCount() {
+		return selectCount;
+	}
+	public void setSelectCount(int selectCount) {
+		this.selectCount = selectCount;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	
 
 }
