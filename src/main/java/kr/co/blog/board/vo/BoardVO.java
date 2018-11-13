@@ -13,6 +13,7 @@ public class BoardVO{
 	private int selectCount;
 	private String content;
 	
+	
 	public String getBoardId() {
 		return boardId;
 	}

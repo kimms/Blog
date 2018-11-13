@@ -18,8 +18,6 @@ public class BoardServiceImpl extends CommonService implements BoardService {
 	@Autowired
 	private BoardDAO boardDao;
 	
-	
-	
 	@Override
 	public boolean createBoard(BoardVO boardVO) throws Exception {
 		return boardDao.insertBoard(boardVO);

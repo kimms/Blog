@@ -18,4 +18,5 @@ public interface BoardDAO {
 	
 	public boolean updateSelectCount(String postId);
 	
+	
 }
