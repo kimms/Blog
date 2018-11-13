@@ -28,7 +28,7 @@ public class BoardMasterController extends CommonController {
 	@Autowired
 	private BoardMasterService boardMasterService;
 	
-	@ApiOperation(value = "마스터보드 등록")
+	@ApiOperation(value = "등록")
 	@RequestMapping(value = "/createBoardMaster", method = RequestMethod.POST, produces = "application/json")
 	public ResponseVO<CommonResultDataVO> createBoardMaster(@RequestBody BoardMasterVO boardVO) {
 		boolean result = false;
@@ -43,7 +43,7 @@ public class BoardMasterController extends CommonController {
 	}
 	
 	@ApiOperation(value = "리스트조회")
-	@RequestMapping(value = "/boardMasters", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/selectBoardMasters", method = RequestMethod.GET, produces = "application/json")
 	public ResponseVO<BoardMasterVO> getBoard() {
 		List<BoardMasterVO> result = null;
 		
@@ -60,7 +60,7 @@ public class BoardMasterController extends CommonController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "boardId", value = "보드 아이디", dataType = "String", paramType = "path", required = true)
 	})
-	@RequestMapping(value = "/boardMaster/{boardId}", method = RequestMethod.PUT, produces = "application/json")
+	@RequestMapping(value = "/updateBoardMaster/{boardId}", method = RequestMethod.PUT, produces = "application/json")
 	public ResponseVO<CommonResultDataVO> ModifyBoard(@PathVariable String boardId, @RequestBody BoardMasterVO boardVO) {
 		boolean result = false;
 		
@@ -77,7 +77,7 @@ public class BoardMasterController extends CommonController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "boardId", value = "보드아이디", dataType = "String", paramType = "path", required = true)
 	})
-	@RequestMapping(value = "/boardMaster/{boardId}", method = RequestMethod.DELETE, produces = "application/json")
+	@RequestMapping(value = "/deleteBoardMaster/{boardId}", method = RequestMethod.DELETE, produces = "application/json")
 	public ResponseVO<CommonResultDataVO> removeBoard(@PathVariable String boardId) {
 		boolean result = false;
 		

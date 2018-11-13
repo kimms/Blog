@@ -6,7 +6,7 @@
 
 	<select id="selectBoardMaster"
 			parameterType="kr.co.blog.board.boardMaster.vo.BoardMasterVO"
-			resultType="kr.co.blog.board.boardMaster.vo.BoardMasterVo">
+			resultType="int">
 	SELECT
 		count(*) AS totalCount
 	FROM
@@ -16,7 +16,7 @@
 	</select>
 
 	<insert id="insertBoardMaster" 
-			parameterType="kr.co.blog.board.BoardMaster.vo.BoardMasterVO">
+			parameterType="kr.co.blog.board.boardMaster.vo.BoardMasterVO">
 	INSERT INTO board_master
 		(
 			board_name, board_desc

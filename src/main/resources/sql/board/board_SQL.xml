@@ -56,16 +56,4 @@
 			post_id = #{postId}
 	
 	</update>
-	
-	<insert id="insertBoardMaster" parameterType="kr.co.blog.board.BoardMaster.vo.BoardMasterVO">
-	INSERT INTO board_master
-		(
-			board_name, board_desc
-		)
-	VALUES
-		(
-			#{boardName}, #{boardDesc}
-		)
-	
-	</insert>
 </mapper>
