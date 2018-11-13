@@ -1,0 +1,101 @@
+############## 테이블 구조 #################
+
+CREATE TABLE `board_free` (
+	`post_id` MEDIUMINT(1) NOT NULL COMMENT '게시글 아이디' AUTO_INCREMENT,
+	`title` VARCHAR(100) NOT NULL COMMENT '게시글 제목',
+    `content` TEXT DEFAULT '' COMMENT '게시글 내용',
+	`select_count` SMALLINT(1) DEFAULT 0 COMMENT '조회수',
+    `delete_status` CHAR(1) DEFAULT 'N' COMMENT '글 삭제 유무(Y/N)',
+    `create_date` TIMESTAMP DEFAULT NOW() COMMENT '글 등록 시간',
+	`modify_date` TIMESTAMP NULL DEFAULT NULL COMMENT'수정 시간',
+	PRIMARY KEY (`post_id`)
+) COMMENT '자유게시판';
+
+
+CREATE TABLE `board_master` (
+  `board_id` TINYINT(1) NOT NULL COMMENT '게시판 아이디' AUTO_INCREMENT,
+  `board_name` VARCHAR(20) NOT NULL COMMENT '게시판 테이블명 table_** ',
+  `board_desc` VARCHAR(100) DEFAULT '' COMMENT '게시판 설명',
+  `create_date` TIMESTAMP DEFAULT NOW(),
+  `modify_date` TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`board_id`),
+  UNIQUE KEY (`board_name`)
+) COMMENT '게시판 마스터 테이블';
+INSERT INTO board_master (board_name, board_desc) values ('free', '자유게시판');
+
+
+CREATE TABLE `reply_free` (
+	`reply_id` MEDIUMINT(1) NOT NULL COMMENT '댓글 아이디' AUTO_INCREMENT,
+	`post_id` MEDIUMINT(1) NOT NULL COMMENT '게시글 아이디',
+	`content` TEXT DEFAULT '' COMMENT '댓글 내용',
+    `create_date` TIMESTAMP DEFAULT NOW() COMMENT '댓글 등록 시간',
+	`modify_date` TIMESTAMP NULL DEFAULT NULL COMMENT'수정 시간',
+	PRIMARY KEY (`reply_id`),
+	FOREIGN KEY (`post_id`) REFERENCES `board_free`(`post_id`)
+		ON DELETE CASCADE 
+) COMMENT '자유게시판 댓글' ;
+
+
+
+################# V1.0 목표 #####################
+기한 : 무기한
+
+내용 :
+	게시판관리(생성,조회,수정,삭제,순서변경)
+		- 게시판 속성
+		  게시판 번호, 게시판 이름, 게시판 설명, 게시판 생성시간
+		  
+	게시판(글등록,글수정,글삭제,글조회[리스트페이징,상세])
+		- 게시글 속성
+		  게시글 번호, 글쓴이, 제목, 내용, 조회수, 작성시간, 수정시간, 댓글수
+	
+	댓글(등록,수정,삭제,리스트조회)
+		- 댓글 속성
+		  댓글번호, 글쓴이, 내용, 등록시간
+		  
+		  
+################## 게시판 생성 API ##################
+#1. boardName 금지단어 검증
+
+#2.  board_master에 중복된 boardName이 있는지 체크
+	SELECT
+		count(*) AS totalCount
+	FROM
+		board_master
+	WHERE
+		board_name = #{boardName}
+
+#3. board_master -> INSERT
+	INSERT INTO board_master
+		(
+			board_name, board_desc
+		)
+	VALUES
+		(
+			#{boardName}, #{boardDesc}
+		)
+
+#4. 테이블 생성 -> board_${boardName}
+	CREATE TABLE board_${boardName} (
+	  `post_id` mediumint(1) NOT NULL AUTO_INCREMENT COMMENT '게시글 아이디',
+	  `title` varchar(100) NOT NULL COMMENT '게시글 제목',
+	  `content` text DEFAULT '' COMMENT '게시글 내용',
+	  `select_count` smallint(1) DEFAULT 0 COMMENT '조회수',
+	  `delete_status` char(1) DEFAULT 'N' COMMENT '글 삭제 유무(Y/N)',
+	  `create_date` timestamp NOT NULL DEFAULT current_timestamp() COMMENT '글 등록 시간',
+	  `modify_date` timestamp NULL DEFAULT NULL COMMENT '수정 시간',
+	  PRIMARY KEY (`post_id`)
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT=#{boardDesc}
+
+#5. 테이블 생성 -> reply_${boardName}
+	CREATE TABLE reply_${boardName} (
+	  `reply_id` mediumint(1) NOT NULL AUTO_INCREMENT COMMENT '댓글 아이디',
+	  `post_id` mediumint(1) NOT NULL COMMENT '게시글 아이디',
+	  `content` text DEFAULT '' COMMENT '댓글 내용',
+	  `create_date` timestamp NOT NULL DEFAULT current_timestamp() COMMENT '댓글 등록 시간',
+	  `modify_date` timestamp NULL DEFAULT NULL COMMENT '수정 시간',
+	  PRIMARY KEY (`reply_id`),
+	  KEY `post_id` (`post_id`),
+	  CONSTRAINT reply_${boardName}_fk FOREIGN KEY (`post_id`) REFERENCES board_${boardName} (`post_id`) ON DELETE CASCADE
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT=#{boardDesc}
+
