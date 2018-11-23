@@ -1,6 +1,5 @@
 package kr.co.blog.board.boardMaster;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,12 +35,17 @@ public class BoardMasterDAOImpl extends CommonDAO implements BoardMasterDAO {
 		return super.getSqlSession().insert("board.board.boardMasters.insertBoardMaster", boardVO) > 0 ? true : false;
 	}
 	
+	@Override
+	public List<BoardMasterVO> selectBoardMasters() {
+		
+		return super.getSqlSession().selectList("board.board.boardMasters.selectBoardMasters");
+	}
 	
 	@Override
-	public List<BoardMasterVO> selectBoardList() {
-		List<BoardMasterVO> list = new ArrayList<BoardMasterVO>();
-		
-		return super.getSqlSession().selectList("board.board.boardMaster.selectBoardMasters");
+	public BoardMasterVO selectBoardMaster(String boardId) {
+		Map<String, String> map = new HashMap<>();
+		map.put("boardId", boardId);
+		return super.getSqlSession().selectOne("board.board.boardMasters.selectBoardMaster", map);
 	}
 	
 	@Override

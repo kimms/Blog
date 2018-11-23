@@ -56,4 +56,14 @@
 			post_id = #{postId}
 	
 	</update>
+	
+	<select id="selectBoardList"
+			parameterType="map"
+			resultType="kr.co.blog.board.vo.BoardVO">
+		SELECT
+			post_id AS postId,
+			title
+		FROM
+			board_${boardName}
+	</select>
 </mapper>

@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.blog.board.boardMaster.BoardMasterService;
+import kr.co.blog.board.boardMaster.vo.BoardMasterVO;
 import kr.co.blog.board.vo.BoardVO;
 import kr.co.blog.common.base.CommonService;
 
@@ -17,6 +19,9 @@ public class BoardServiceImpl extends CommonService implements BoardService {
 	
 	@Autowired
 	private BoardDAO boardDao;
+	
+	@Autowired
+	private BoardMasterService boardMasterService;
 	
 	@Override
 	public boolean createBoard(BoardVO boardVO) throws Exception {
@@ -45,6 +50,13 @@ public class BoardServiceImpl extends CommonService implements BoardService {
 	@Override
 	public boolean removeBoard(String boardId) throws Exception {
 		return boardDao.deleteBoard(boardId);
+	}
+
+	@Override
+	public List<BoardVO> getBoardList(String boardId) throws Exception {
+		BoardMasterVO boardMasterVO = boardMasterService.getBoardMaster(boardId);
+		System.out.println(boardMasterVO.getBoardName());
+		return boardDao.selectBoardList(boardMasterVO.getBoardName());
 	}
 
 }

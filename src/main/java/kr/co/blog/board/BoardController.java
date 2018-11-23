@@ -55,6 +55,22 @@ public class BoardController extends CommonController {
 		return super.makeResponseData(HttpStatus.OK, result);
 	}
 	
+	@ApiOperation(value = "게시글 리스트 조회")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "boardId", value = "보드 아이디", dataType = "String", paramType = "path", required = true)
+	})
+	@RequestMapping(value = "/board/boardlist/{boardId}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseVO<BoardVO> getBoardMaster(@PathVariable String boardId) {
+		List<BoardVO> result = null;
+		
+		try {
+			result = boardService.getBoardList(boardId);
+		} catch (Exception e) {
+			throw new CommonException(e);
+		}
+		return super.makeResponseData(HttpStatus.OK, result);
+	}
+	
 	@ApiOperation(value = "상세 조회")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "boardId", value = "보드 아이디", dataType = "String", paramType = "path", required = true)

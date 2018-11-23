@@ -40,6 +40,13 @@ public class BoardDAOImpl extends CommonDAO implements BoardDAO {
 	}
 	
 	@Override
+	public List<BoardVO> selectBoardList(String boardName) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("boardName", boardName);
+		return super.getSqlSession().selectList("board.board.selectBoardList", map);
+	}
+	
+	@Override
 	public boolean updateBoard(BoardVO boardVO) {
 		
 //		return true;

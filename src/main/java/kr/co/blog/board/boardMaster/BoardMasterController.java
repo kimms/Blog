@@ -29,7 +29,7 @@ public class BoardMasterController extends CommonController {
 	private BoardMasterService boardMasterService;
 	
 	@ApiOperation(value = "게시판 생성")
-	@RequestMapping(value = "/createBoardMaster", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/boardmaster/createBoardMaster", method = RequestMethod.POST, produces = "application/json")
 	public ResponseVO<CommonResultDataVO> createBoardMaster(@RequestBody BoardMasterVO boardVO) {
 		boolean result = false;
 		
@@ -43,12 +43,12 @@ public class BoardMasterController extends CommonController {
 	}
 	
 	@ApiOperation(value = "리스트조회")
-	@RequestMapping(value = "/selectBoardMasters", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/boardmaster/selectBoardMasters", method = RequestMethod.GET, produces = "application/json")
 	public ResponseVO<BoardMasterVO> getBoard() {
 		List<BoardMasterVO> result = null;
 		
 		try {
-			result = boardMasterService.getBoards();
+			result = boardMasterService.getBoardMasters();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new CommonException(e);
@@ -60,7 +60,7 @@ public class BoardMasterController extends CommonController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "boardId", value = "보드 아이디", dataType = "String", paramType = "path", required = true)
 	})
-	@RequestMapping(value = "/updateBoardMaster/{boardId}", method = RequestMethod.PUT, produces = "application/json")
+	@RequestMapping(value = "/boardmaster/updateBoardMaster/{boardId}", method = RequestMethod.PUT, produces = "application/json")
 	public ResponseVO<CommonResultDataVO> ModifyBoard(@PathVariable String boardId, @RequestBody BoardMasterVO boardVO) {
 		boolean result = false;
 		
@@ -77,7 +77,7 @@ public class BoardMasterController extends CommonController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "boardId", value = "보드아이디", dataType = "String", paramType = "path", required = true)
 	})
-	@RequestMapping(value = "/deleteBoardMaster/{boardId}", method = RequestMethod.DELETE, produces = "application/json")
+	@RequestMapping(value = "/boardmaster/deleteBoardMaster/{boardId}", method = RequestMethod.DELETE, produces = "application/json")
 	public ResponseVO<CommonResultDataVO> removeBoard(@PathVariable String boardId) {
 		boolean result = false;
 		

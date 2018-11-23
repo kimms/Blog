@@ -8,9 +8,9 @@ public interface BoardMasterService {
 
 	public boolean createBoard(BoardMasterVO boardVO) throws Exception;
 	
-	public List<BoardMasterVO> getBoards() throws Exception;
+	public List<BoardMasterVO> getBoardMasters() throws Exception;
 	
-//	public BoardMasterVO getBoard(String boardId) throws Exception;
+	public BoardMasterVO getBoardMaster(String boardId) throws Exception;
 	
 	public boolean modifyBoard(BoardMasterVO boardVO) throws Exception;
 	

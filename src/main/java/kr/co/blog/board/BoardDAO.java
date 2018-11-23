@@ -12,6 +12,8 @@ public interface BoardDAO {
 	
 	public BoardVO selectBoard(String postId);
 	
+	public List<BoardVO> selectBoardList(String boardName);
+	
 	public boolean updateBoard(BoardVO boardVO);
 	
 	public boolean deleteBoard(String boardId);

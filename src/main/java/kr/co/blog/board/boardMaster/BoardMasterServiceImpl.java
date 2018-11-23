@@ -50,9 +50,14 @@ public class BoardMasterServiceImpl extends CommonService implements BoardMaster
 	}
 	
 	@Override
-	public List<BoardMasterVO> getBoards() throws Exception {
+	public List<BoardMasterVO> getBoardMasters() throws Exception {
 		LOGGER.debug("[DEBUG]select list");
-		return boardDao.selectBoardList();
+		return boardDao.selectBoardMasters();
+	}
+	
+	@Override
+	public BoardMasterVO getBoardMaster(String boardId) throws Exception {
+		return boardDao.selectBoardMaster(boardId);
 	}
 	
 	@Override

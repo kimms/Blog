@@ -12,6 +12,8 @@ public interface BoardService {
 	
 	public BoardVO getBoard(String boardId) throws Exception;
 	
+	public List<BoardVO> getBoardList(String boardId) throws Exception;
+	
 	public boolean modifyBoard(BoardVO boardVO) throws Exception;
 	
 	public boolean removeBoard(String boardId) throws Exception;

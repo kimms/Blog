@@ -27,7 +27,8 @@
 			)
 	</insert>
 	
-	<insert id="createBoardTable" parameterType="kr.co.blog.board.boardMaster.vo.BoardMasterVO">
+	<insert id="createBoardTable"
+			parameterType="kr.co.blog.board.boardMaster.vo.BoardMasterVO">
 		CREATE TABLE board_${boardName} (
 		  `post_id` mediumint(1) NOT NULL AUTO_INCREMENT COMMENT '게시글 아이디',
 		  `title` varchar(100) NOT NULL COMMENT '게시글 제목',
@@ -40,7 +41,8 @@
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT=#{boardDesc}
 	</insert>
 	
-	<insert id="createReplyTable" parameterType="kr.co.blog.board.boardMaster.vo.BoardMasterVO">
+	<insert id="createReplyTable"
+			parameterType="kr.co.blog.board.boardMaster.vo.BoardMasterVO">
 		CREATE TABLE reply_${boardName} (
 		  `reply_id` mediumint(1) NOT NULL AUTO_INCREMENT COMMENT '댓글 아이디',
 		  `post_id` mediumint(1) NOT NULL COMMENT '게시글 아이디',
@@ -52,4 +54,28 @@
 		  CONSTRAINT reply_${boardName}_fk FOREIGN KEY (`post_id`) REFERENCES board_${boardName} (`post_id`) ON DELETE CASCADE
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT=#{boardDesc}
 	</insert>
+	
+	<select id="selectBoardMasters"
+			parameterType="kr.co.blog.board.boardMaster.vo.BoardMasterVO"
+			resultType="kr.co.blog.board.boardMaster.vo.BoardMasterVO">
+		SELECT
+			board_id AS boardId,
+			board_name AS boardName,
+			board_desc AS boardDesc
+		FROM
+			board_master
+	</select>
+	
+	<select id="selectBoardMaster"
+			parameterType="map"
+			resultType="kr.co.blog.board.boardMaster.vo.BoardMasterVO">
+		SELECT
+			board_id AS boardId,
+			board_name AS boardName,
+			board_desc AS boardDesc
+		FROM
+			board_master
+		WHERE
+			board_id=#{boardId}
+	</select>			
 </mapper>
