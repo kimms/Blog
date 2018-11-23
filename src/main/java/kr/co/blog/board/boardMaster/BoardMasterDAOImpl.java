@@ -14,10 +14,26 @@ import kr.co.blog.common.base.CommonDAO;
 public class BoardMasterDAOImpl extends CommonDAO implements BoardMasterDAO {
 	
 	@Override
+	public boolean selectBoardNameDuplicate(BoardMasterVO boardMasterVO) {
+		int result = super.getSqlSession().selectOne("board.board.boardMasters.selectBoardNameDuplicate", boardMasterVO);
+		return result > 0 ? true : false;
+	}
+	
+	@Override
+	public boolean createBoardTable(BoardMasterVO boardMasterVO) {
+		super.getSqlSession().insert("board.board.boardMasters.createBoardTable", boardMasterVO);
+		return true;
+	}
+	
+	@Override
+	public boolean createReplyTable(BoardMasterVO boardMasterVO) {
+		super.getSqlSession().insert("board.board.boardMasters.createReplyTable", boardMasterVO);
+		return true;
+	}
+	
+	@Override
 	public boolean insertBoard(BoardMasterVO boardVO) {
-		
-//		return true;
-		return super.getSqlSession().insert("board.board.boardMaster.insertBoardMaster", boardVO) > 0 ? true : false;
+		return super.getSqlSession().insert("board.board.boardMasters.insertBoardMaster", boardVO) > 0 ? true : false;
 	}
 	
 	

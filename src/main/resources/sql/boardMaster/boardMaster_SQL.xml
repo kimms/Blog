@@ -4,27 +4,52 @@
 
 <mapper namespace="board.board.boardMasters">
 
-	<select id="selectBoardMaster"
+	<select id="selectBoardNameDuplicate"
 			parameterType="kr.co.blog.board.boardMaster.vo.BoardMasterVO"
 			resultType="int">
-	SELECT
-		count(*) AS totalCount
-	FROM
-		board_master
-	WHERE
-		board_name = #{boardName}
+		SELECT
+			count(*) AS totalCount
+		FROM
+			board_master
+		WHERE
+			board_name = #{boardName}
 	</select>
 
 	<insert id="insertBoardMaster" 
 			parameterType="kr.co.blog.board.boardMaster.vo.BoardMasterVO">
-	INSERT INTO board_master
-		(
-			board_name, board_desc
-		)
-	VALUES
-		(
-			#{boardName}, #{boardDesc}
-		)
+		INSERT INTO board_master
+			(
+				board_name, board_desc
+			)
+		VALUES
+			(
+				#{boardName}, #{boardDesc}
+			)
+	</insert>
 	
+	<insert id="createBoardTable" parameterType="kr.co.blog.board.boardMaster.vo.BoardMasterVO">
+		CREATE TABLE board_${boardName} (
+		  `post_id` mediumint(1) NOT NULL AUTO_INCREMENT COMMENT '게시글 아이디',
+		  `title` varchar(100) NOT NULL COMMENT '게시글 제목',
+		  `content` text DEFAULT '' COMMENT '게시글 내용',
+		  `select_count` smallint(1) DEFAULT 0 COMMENT '조회수',
+		  `delete_status` char(1) DEFAULT 'N' COMMENT '글 삭제 유무(Y/N)',
+		  `create_date` timestamp NOT NULL DEFAULT current_timestamp() COMMENT '글 등록 시간',
+		  `modify_date` timestamp NULL DEFAULT NULL COMMENT '수정 시간',
+		  PRIMARY KEY (`post_id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT=#{boardDesc}
+	</insert>
+	
+	<insert id="createReplyTable" parameterType="kr.co.blog.board.boardMaster.vo.BoardMasterVO">
+		CREATE TABLE reply_${boardName} (
+		  `reply_id` mediumint(1) NOT NULL AUTO_INCREMENT COMMENT '댓글 아이디',
+		  `post_id` mediumint(1) NOT NULL COMMENT '게시글 아이디',
+		  `content` text DEFAULT '' COMMENT '댓글 내용',
+		  `create_date` timestamp NOT NULL DEFAULT current_timestamp() COMMENT '댓글 등록 시간',
+		  `modify_date` timestamp NULL DEFAULT NULL COMMENT '수정 시간',
+		  PRIMARY KEY (`reply_id`),
+		  KEY `post_id` (`post_id`),
+		  CONSTRAINT reply_${boardName}_fk FOREIGN KEY (`post_id`) REFERENCES board_${boardName} (`post_id`) ON DELETE CASCADE
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT=#{boardDesc}
 	</insert>
 </mapper>

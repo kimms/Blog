@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import kr.co.blog.board.boardMaster.vo.BoardMasterVO;
 import kr.co.blog.common.base.CommonService;
+import kr.co.blog.common.error.CommonErrorCode;
+import kr.co.blog.common.error.CommonException;
 
 @Service
 public class BoardMasterServiceImpl extends CommonService implements BoardMasterService {
@@ -19,8 +21,31 @@ public class BoardMasterServiceImpl extends CommonService implements BoardMaster
 	private BoardMasterDAO boardDao;
 	
 	@Override
-	public boolean createBoard(BoardMasterVO boardVO) throws Exception {
-		return boardDao.insertBoard(boardVO);
+	public boolean createBoard(BoardMasterVO boardMasterVO) throws Exception {
+		
+		boolean result = false;
+		
+		// TODO 금지단어 검증
+		
+		// 게시판 명 중복 체크
+		if(boardDao.selectBoardNameDuplicate(boardMasterVO)) {
+			System.err.println("이름 중복");
+			throw new CommonException(CommonErrorCode.INTERNAL_SERVER_ERROR);
+		}
+		
+		// 게시판 정보 등록
+		result = boardDao.insertBoard(boardMasterVO);
+		if(!result) {
+			throw new CommonException(CommonErrorCode.INTERNAL_SERVER_ERROR);
+		}
+		
+		// 게시판 테이블 생성
+		boardDao.createBoardTable(boardMasterVO);
+		
+		// 댓글 테이블 생성
+		boardDao.createReplyTable(boardMasterVO);
+		
+		return true;
 	}
 	
 	@Override

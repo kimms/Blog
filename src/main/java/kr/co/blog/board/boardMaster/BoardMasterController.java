@@ -28,7 +28,7 @@ public class BoardMasterController extends CommonController {
 	@Autowired
 	private BoardMasterService boardMasterService;
 	
-	@ApiOperation(value = "등록")
+	@ApiOperation(value = "게시판 생성")
 	@RequestMapping(value = "/createBoardMaster", method = RequestMethod.POST, produces = "application/json")
 	public ResponseVO<CommonResultDataVO> createBoardMaster(@RequestBody BoardMasterVO boardVO) {
 		boolean result = false;
