@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.blog.board.boardMaster.error.BoardMasterErrorCode;
 import kr.co.blog.board.boardMaster.vo.BoardMasterVO;
 import kr.co.blog.common.base.CommonService;
 import kr.co.blog.common.error.CommonErrorCode;
@@ -30,7 +31,7 @@ public class BoardMasterServiceImpl extends CommonService implements BoardMaster
 		// 게시판 명 중복 체크
 		if(boardDao.selectBoardNameDuplicate(boardMasterVO)) {
 			System.err.println("이름 중복");
-			throw new CommonException(CommonErrorCode.INTERNAL_SERVER_ERROR);
+			throw new CommonException(BoardMasterErrorCode.BOARD_NAME_IS_DUPLICATE);
 		}
 		
 		// 게시판 정보 등록
