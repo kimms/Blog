@@ -104,3 +104,10 @@ CREATE TABLE `reply_free` (
 	  CONSTRAINT reply_${boardName}_fk FOREIGN KEY (`post_id`) REFERENCES board_${boardName} (`post_id`) ON DELETE CASCADE
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT=#{boardDesc}
 
+# 보드마스터 셀렉트 쿼리
+	SELECT
+		board_id AS boardId,
+		board_name AS boardName,
+        board_desc AS boardDesc
+	FROM
+		board_master
