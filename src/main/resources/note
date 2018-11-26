@@ -26,7 +26,6 @@ CREATE TABLE `board_master` (
   PRIMARY KEY (`board_id`),
   UNIQUE KEY (`board_name`)
 ) COMMENT '게시판 마스터 테이블';
-INSERT INTO board_master (board_name, board_desc) values ('free', '자유게시판');
 
 
 CREATE TABLE `reply_free` (
@@ -111,3 +110,28 @@ CREATE TABLE `reply_free` (
         board_desc AS boardDesc
 	FROM
 		board_master
+		
+# 게시글 등록 쿼리 ( 다 읽어보시오 )
+	* parameterType 은 반드시 VO로 해야함.
+	* Service에서 리턴 타입을 boolean이 아닌 컨트롤러에서 받은 VO를 그대로 리턴해줘야함.
+	
+	 - API 흐름
+	   1.브라우저에서 title, content 값을 api로 전달함
+	   2.api Controller에서 값을 vo로 받음(vo에 title과 content 2개의 값이있는 상태)
+	   3.서비스에서 아래 insert 쿼리를 실행함(파라미터는 vo로 해야함)
+	   4.아래 쿼리의 selectKey 부분 때문에 쿼리 실행후 자동으로 vo안의 postId에 값이 담기게됨.( vo에 title,content,postId 3개의 값이 있는 상태)
+	   5.서비스에서 insert후 리턴시 컨트롤러에서 받았던 vo를 그대로 리턴
+	   6.컨트롤러가 브라우저에게 해당 값을 리턴
+	   7.최종적으로 브라우저가 받은 값은 ( postId, title, content )이기 때문에 게시글등록API 호출후 따로 게시글상세조회API 호출할 필요가없음!--> 게시글등록 API 하나로 등록,상세조회 2가지 기능을 처리하는 효과 
+	#################### 게시글 등록 쿼리 #########################
+	
+	INSERT INTO board_${boardName}
+		(title, content)
+	VALUES
+		(#{title}, content)
+		
+	<selectKey resultType="int" keyProperty="postId" order="AFTER">
+		SELECT LAST_INSERT_ID()
+	</selectKey>
+	
+	#################### 게시글 등록 쿼리 #########################
