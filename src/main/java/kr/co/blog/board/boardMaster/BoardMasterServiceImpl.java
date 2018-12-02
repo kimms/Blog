@@ -1,6 +1,9 @@
 package kr.co.blog.board.boardMaster;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.naming.CommunicationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +30,24 @@ public class BoardMasterServiceImpl extends CommonService implements BoardMaster
 		boolean result = false;
 		
 		// TODO 금지단어 검증
+		String boardName = boardMasterVO.getBoardName();
+	    List<String> illegalWords = new ArrayList<>();
+	    	illegalWords.add("delete");
+	    	illegalWords.add("drop");
+	    	illegalWords.add("select");
+	    	illegalWords.add("insert");
+	    	illegalWords.add("update");
+	    	illegalWords.add(" ");
+	    	illegalWords.add(";");
+	    
+	    for (int i = 0; i < illegalWords.size(); i++) {
+	        if(boardName.contains(illegalWords.get(i))) {
+	        System.err.println("boardName에 <" + boardName + "> 단어가 포함됨");
+	        throw new CommonException(BoardMasterErrorCode.INCLUDED_ILLEGAL_WORD);
+	        
+	    }else{
+	        System.err.println("boardName에 <" + boardName + "> 단어가 포함되지 않음");
+	    }}
 		
 		// 게시판 명 중복 체크
 		if(boardDao.selectBoardNameDuplicate(boardMasterVO)) {
